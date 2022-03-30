@@ -11,7 +11,7 @@ resources:
     webhook_token: ((ashwin.webhook_token))
     source:
       access_token: ((ashwin.access_token))
-      repository: adgear/rtb-swirl
+      repository: AshwinAmbal/test-concourse-pr.git
   - name: main
     type: git
     source:
