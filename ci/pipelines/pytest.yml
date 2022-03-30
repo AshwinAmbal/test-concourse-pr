@@ -1,0 +1,62 @@
+resource_types:
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: teliaoss/github-pr-resource
+
+resources:
+  - name: git-pull-request
+    type: pull-request
+    check_every: 24h
+    webhook_token: ((ashwin.webhook_token))
+    source:
+      access_token: ((ashwin.access_token))
+      repository: adgear/rtb-swirl
+  - name: main
+    type: git
+    source:
+      private_key: ((ashwin.ssh_private_key))
+      uri: git@github.com:AshwinAmbal/test-concourse-pr.git
+
+jobs:
+  - name: run-pr-checks
+    plan:
+      - get: main
+      - get: git-pull-request
+        version: every
+        trigger: true
+      - in_parallel:
+          - put: git-pull-request
+            params: { path: git-pull-request, status: PENDING }
+          - task: run-unit-tests
+#            file: main/ci/pipelines/tasks/run_pytest.yml
+            config:
+              platform: linux
+
+              image_resource:
+                type: docker-image
+                source:
+                  repository: kennethreitz/pipenv
+
+              inputs:
+                - name: src
+
+              run:
+                path: bash
+                args:
+                  - -c
+                  - |
+                    #!/bin/bash -ex
+                    pipenv install --dev
+                    pipenv run python -m pytest
+
+                dir: src/tests
+
+            input_mapping:
+              src: git-pull-request
+            on_success:
+              put: git-pull-request
+              params: { path: git-pull-request, status: SUCCESS }
+            on_failure:
+              put: git-pull-request
+              params: { path: git-pull-requestr, status: FAILURE }
