@@ -14,9 +14,11 @@ resources:
       repository: AshwinAmbal/test-concourse-pr.git
   - name: main
     type: git
+    check_every: 1h
     source:
       private_key: ((ashwin.ssh_private_key))
       uri: git@github.com:AshwinAmbal/test-concourse-pr.git
+      branch: main
 
 jobs:
   - name: run-pr-checks
