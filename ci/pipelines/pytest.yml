@@ -31,28 +31,7 @@ jobs:
           - put: git-pull-request
             params: { path: git-pull-request, status: PENDING }
           - task: run-unit-tests
-#            file: main/ci/pipelines/tasks/run_pytest.yml
-            config:
-              platform: linux
-
-              image_resource:
-                type: docker-image
-                source:
-                  repository: kennethreitz/pipenv
-
-              inputs:
-                - name: src
-
-              run:
-                path: bash
-                args:
-                  - -c
-                  - |
-                    #!/bin/bash -ex
-                    pipenv install --dev
-                    pipenv run python -m pytest
-
-                dir: src/tests
+            file: main/ci/pipelines/tasks/run_pytest.yml
 
             input_mapping:
               src: git-pull-request

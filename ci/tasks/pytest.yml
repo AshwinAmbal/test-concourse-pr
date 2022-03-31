@@ -3,7 +3,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: kennethreitz/pipenv
+    repository: qnib/pytest
 
 inputs:
 - name: src
@@ -14,7 +14,6 @@ run:
   - -c
   - |
     #!/bin/bash -ex
-    pipenv install --dev
-    pipenv run python -m pytest
+    pytest
 
   dir: src/tests
