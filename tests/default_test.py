@@ -5,6 +5,12 @@ def capital_case(x):
 def test_capital_case():
     assert capital_case('semaphore') == 'Semaphore'
 
+
 def test_name():
     name = 'Ashwin'
     assert name == 'Ashwin'
+
+
+def test_job_unequal():
+    job = 'Postman'
+    assert job != 'Engineer'
