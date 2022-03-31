@@ -31,7 +31,7 @@ jobs:
           - put: git-pull-request
             params: { path: git-pull-request, status: PENDING }
           - task: run-unit-tests
-            file: main/ci/pipelines/tasks/run_pytest.yml
+            file: main/ci/tasks/run_pytest.yml
 
             input_mapping:
               src: git-pull-request
