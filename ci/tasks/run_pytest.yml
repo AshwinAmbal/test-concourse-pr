@@ -3,7 +3,9 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: qnib/pytest
+    repository: adgear-docker.jfrog.io/adgear/pytest
+    username: ((artifactory.username))
+    password: ((artifactory.password))
 
 inputs:
 - name: src
